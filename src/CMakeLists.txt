@@ -6,10 +6,7 @@ target_sources(
 	BiomeDef.cpp
 	BlockArea.cpp
 	BlockInfo.cpp
-	BlockState.cpp
 	BlockType.cpp
-	BlockTypePalette.cpp
-	BlockTypeRegistry.cpp
 	BrewingRecipes.cpp
 	Broadcaster.cpp
 	BoundingBox.cpp
@@ -53,7 +50,6 @@ target_sources(
 	MonsterConfig.cpp
 	NetherPortalScanner.cpp
 	OverridesSettingsRepository.cpp
-	PalettedBlockArea.cpp
 	ProbabDistrib.cpp
 	RankManager.cpp
 	RCONServer.cpp
@@ -76,11 +72,8 @@ target_sources(
 	BlockArea.h
 	BlockInServerPluginInterface.h
 	BlockInfo.h
-	BlockState.h
 	BlockTracer.h
 	BlockType.h
-	BlockTypePalette.h
-	BlockTypeRegistry.h
 	BrewingRecipes.h
 	BoundingBox.h
 	BuildInfo.h.cmake
@@ -135,7 +128,6 @@ target_sources(
 	NetherPortalScanner.h
 	OpaqueWorld.h
 	OverridesSettingsRepository.h
-	PalettedBlockArea.h
 	ProbabDistrib.h
 	RankManager.h
 	RCONServer.h
@@ -173,7 +165,7 @@ file(WRITE "${CMAKE_BINARY_DIR}/include/Globals.h"
 	"/* This file allows Globals.h to be included with an absolute path */\n#include \"${PROJECT_SOURCE_DIR}/src/Globals.h\"\n")
 
 configure_file("BuildInfo.h.cmake" "${CMAKE_BINARY_DIR}/include/BuildInfo.h")
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_BINARY_DIR}/include/")
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_BINARY_DIR}/include/" ".")
 
 # Generate AllFiles.lst for CheckBasicStyle.lua
 get_target_property(ALL_FILES ${CMAKE_PROJECT_NAME} SOURCES)

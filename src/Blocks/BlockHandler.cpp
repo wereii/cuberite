@@ -611,6 +611,8 @@ cBlockHandler * cBlockHandler::CreateBlockHandler(BLOCKTYPE aBlockType)
 ////////////////////////////////////////////////////////////////////////////////
 // Temporary:
 
+/* TODO: string mapping pending migration into WorldStorage\NamespaceSerializer
+
 void Temporary::RegisterAllBlockHandlers(BlockTypeRegistry & aRegistry)
 {
 	static struct
@@ -1303,4 +1305,4 @@ void Temporary::RegisterAllBlockHandlers(BlockTypeRegistry & aRegistry)
 		std::shared_ptr<cBlockHandler> handler(::CreateBlockHandler(r.oldBlockType));
 		aRegistry.registerBlockType("<built-in>", r.newBlockTypeName, handler);
 	}
-}
+} */

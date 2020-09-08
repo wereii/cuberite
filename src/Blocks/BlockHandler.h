@@ -16,7 +16,6 @@ class cBlockPluginInterface;
 class cChunkInterface;
 class cWorldInterface;
 class cItems;
-class BlockTypeRegistry;
 
 
 
@@ -236,14 +235,4 @@ protected:
 	static cBlockHandler * CreateBlockHandler(BLOCKTYPE a_BlockType);
 
 	friend class cBlockInfo;
-};
-
-
-
-
-namespace Temporary
-{
-	/** Registers all the BlockHandler descendants in the specified registry.
-	Temporary, since this will later be performed in a plugin that provides the vanilla blocks. */
-	void RegisterAllBlockHandlers(BlockTypeRegistry & aRegistry);
 };

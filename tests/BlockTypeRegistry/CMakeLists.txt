@@ -7,7 +7,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/)
 add_executable(BlockStateTest
 	BlockStateTest.cpp
 	../TestHelpers.h
-	${CMAKE_SOURCE_DIR}/src/BlockState.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockState.cpp
 	${CMAKE_SOURCE_DIR}/src/StringUtils.cpp
 	${CMAKE_SOURCE_DIR}/src/OSSupport/CriticalSection.cpp
 )
@@ -16,8 +16,8 @@ target_link_libraries(BlockStateTest fmt::fmt)
 add_executable(BlockTypePaletteTest
 	BlockTypePaletteTest.cpp
 	../TestHelpers.h
-	${CMAKE_SOURCE_DIR}/src/BlockState.cpp
-	${CMAKE_SOURCE_DIR}/src/BlockTypePalette.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockState.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockTypePalette.cpp
 	${CMAKE_SOURCE_DIR}/src/JsonUtils.cpp
 	${CMAKE_SOURCE_DIR}/src/StringUtils.cpp
 	${CMAKE_SOURCE_DIR}/src/OSSupport/CriticalSection.cpp
@@ -29,7 +29,7 @@ target_link_libraries(BlockTypePaletteTest fmt::fmt jsoncpp_lib)
 add_executable(BlockTypeRegistryTest
 	BlockTypeRegistryTest.cpp
 	../TestHelpers.h
-	${CMAKE_SOURCE_DIR}/src/BlockTypeRegistry.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockTypeRegistry.cpp
 	${CMAKE_SOURCE_DIR}/src/StringUtils.cpp
 	${CMAKE_SOURCE_DIR}/src/OSSupport/CriticalSection.cpp
 )
@@ -39,9 +39,9 @@ target_link_libraries(BlockTypeRegistryTest fmt::fmt Threads::Threads)
 add_executable(PalettedBlockAreaTest
 	PalettedBlockAreaTest.cpp
 	../TestHelpers.h
-	${CMAKE_SOURCE_DIR}/src/BlockState.cpp
-	${CMAKE_SOURCE_DIR}/src/BlockTypeRegistry.cpp
-	${CMAKE_SOURCE_DIR}/src/BlockTypePalette.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockState.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockTypeRegistry.cpp
+	${CMAKE_SOURCE_DIR}/src/Bindings/BlockTypePalette.cpp
 	${CMAKE_SOURCE_DIR}/src/Cuboid.cpp
 	${CMAKE_SOURCE_DIR}/src/JsonUtils.cpp
 	${CMAKE_SOURCE_DIR}/src/PalettedBlockArea.cpp
