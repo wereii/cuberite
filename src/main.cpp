@@ -86,7 +86,7 @@ static void NonCtrlHandler(int a_Signal)
 		case SIGTERM:
 		{
 			// Server is shutting down, wait for it...
-			cRoot::Get()->Stop();
+			cRoot::Stop();
 			return;
 		}
 #ifdef SIGPIPE
@@ -111,7 +111,7 @@ static void NonCtrlHandler(int a_Signal)
 // Handle CTRL events in windows, including console window close
 static BOOL CtrlHandler(DWORD fdwCtrlType)
 {
-	cRoot::Get()->Stop();
+	cRoot::Stop();
 	LOGD("Terminate event raised from the Windows CtrlHandler");
 
 	// Delay as much as possible to try to get the server to shut down cleanly - 10 seconds given by Windows
@@ -130,7 +130,7 @@ static BOOL CtrlHandler(DWORD fdwCtrlType)
 ////////////////////////////////////////////////////////////////////////////////
 // ParseArguments - Read the startup arguments and store into a settings object
 
-static void ParseArguments(int argc, char ** argv, cMemorySettingsRepository & repo)
+static cMemorySettingsRepository ParseArguments(int argc, char ** argv)
 {
 	// Parse the comand line args:
 	TCLAP::CmdLine cmd("Cuberite");
@@ -148,6 +148,7 @@ static void ParseArguments(int argc, char ** argv, cMemorySettingsRepository & r
 	cmd.parse(argc, argv);
 
 	// Copy the parsed args' values into a settings repository:
+	cMemorySettingsRepository repo;
 	if (confArg.isSet())
 	{
 		AString conf_file = confArg.getValue();
@@ -199,6 +200,8 @@ static void ParseArguments(int argc, char ** argv, cMemorySettingsRepository & r
 	{
 		g_MiniDumpWriter.AddDumpFlags(MiniDumpFlags::WithFullMemory);
 	}
+
+	return repo;
 }
 
 
@@ -231,8 +234,7 @@ static int UniversalMain(int argc, char * argv[], bool RunningAsService)
 	try
 	{
 		// Make sure g_RunAsService is set correctly before checking it's value
-		cMemorySettingsRepository Settings;
-		ParseArguments(argc, argv, Settings);
+		auto Settings = ParseArguments(argc, argv);
 
 		// Attempt to run as a service
 		if (!RunningAsService && g_RunAsService)

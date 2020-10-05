@@ -11,6 +11,7 @@ public:
 	};
 
 	cSettingsRepositoryInterface() = default;
+	cSettingsRepositoryInterface(cSettingsRepositoryInterface &&) = default;
 	virtual ~cSettingsRepositoryInterface() = default;
 	DISALLOW_COPY_AND_ASSIGN(cSettingsRepositoryInterface);
 

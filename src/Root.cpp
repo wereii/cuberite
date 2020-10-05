@@ -2,6 +2,7 @@
 #include "Globals.h"  // NOTE: MSVC stupidness requires this to be the same across all modules
 
 #include "Root.h"
+#include "main.h"
 
 // STD lib hreaders:
 #include <iostream>
@@ -45,8 +46,9 @@
 
 
 
-extern bool g_RunAsService;
-cRoot * cRoot::s_Root = nullptr;
+decltype(cRoot::s_Root)      cRoot::s_Root;
+decltype(cRoot::s_NextState) cRoot::s_NextState;
+decltype(cRoot::s_StopEvent) cRoot::s_StopEvent;
 
 
 
@@ -192,7 +194,7 @@ bool cRoot::Run(cSettingsRepositoryInterface & a_OverridesRepo)
 		m_StartTime = std::chrono::steady_clock::now();
 
 		HandleInput();
-		m_StopEvent.Wait();
+		s_StopEvent.Wait();
 
 		// Stop the server:
 		m_WebAdmin->Stop();
@@ -231,7 +233,7 @@ bool cRoot::Run(cSettingsRepositoryInterface & a_OverridesRepo)
 	LOG("Shutdown successful!");
 	LOG("--- Stopped Log ---");
 
-	return m_NextState == NextState::Restart;
+	return s_NextState == NextState::Restart;
 }
 
 
@@ -955,7 +957,7 @@ void cRoot::HandleInput()
 	cLogCommandOutputCallback Output;
 	AString Command;
 
-	while (m_NextState == NextState::Run)
+	while (s_NextState == NextState::Run)
 	{
 #ifndef _WIN32
 		timeval Timeout{ 0, 0 };
@@ -978,7 +980,7 @@ void cRoot::HandleInput()
 			return;
 		}
 
-		if (m_NextState != NextState::Run)
+		if (s_NextState != NextState::Run)
 		{
 			// Already shutting down, can't execute commands
 			break;
@@ -999,7 +1001,7 @@ void cRoot::HandleInput()
 void cRoot::TransitionNextState(NextState a_NextState)
 {
 	{
-		auto Current = m_NextState.load();
+		auto Current = s_NextState.load();
 		do
 		{
 			// Stopping is final, so stops override restarts:
@@ -1008,15 +1010,15 @@ void cRoot::TransitionNextState(NextState a_NextState)
 				return;
 			}
 		}
-		while (!m_NextState.compare_exchange_strong(Current, a_NextState));
+		while (!s_NextState.compare_exchange_strong(Current, a_NextState));
 	}
 
-	if (m_NextState == NextState::Run)
+	if (s_NextState == NextState::Run)
 	{
 		return;
 	}
 
-	m_StopEvent.Set();
+	s_StopEvent.Set();
 
 #ifdef WIN32
 
