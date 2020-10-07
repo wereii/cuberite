@@ -22,7 +22,7 @@ static const Byte g_Zeroes[4096] = {0};
 
 int main(int argc, char ** argv)
 {
-	auto consoleLogListener = MakeConsoleListener(false);
+	auto consoleLogListener = MakeConsoleListener(false, false);
 	auto consoleAttachment = cLogger::GetInstance().AttachListener(std::move(consoleLogListener));
 	auto fileLogListenerRet = MakeFileListener();
 	if (!fileLogListenerRet.first)

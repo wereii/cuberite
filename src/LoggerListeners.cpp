@@ -207,17 +207,18 @@ class cNullConsoleListener
 
 
 
-std::unique_ptr<cLogger::cListener> MakeConsoleListener(bool a_IsService)
+std::unique_ptr<cLogger::cListener> MakeConsoleListener(bool a_IsService, bool a_KeepStd)
 {
-	if (a_IsService)
+	if (a_IsService && !a_KeepStd)
 	{
 		return std::make_unique<cNullConsoleListener>();
 	}
+	// a_KeepStd assumes external programs will be parsing the stdout/err, disable color
 
 	#ifdef _WIN32
 		// See whether we are writing to a console the default console attrib:
 		bool ShouldColorOutput = (_isatty(_fileno(stdin)) != 0);
-		if (ShouldColorOutput)
+		if (!a_KeepStd && ShouldColorOutput)
 		{
 			CONSOLE_SCREEN_BUFFER_INFO sbi;
 			HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -231,7 +232,7 @@ std::unique_ptr<cLogger::cListener> MakeConsoleListener(bool a_IsService)
 		}
 	#elif defined (__linux) || defined (__APPLE__)
 		// TODO: lookup terminal in terminfo
-		if (isatty(fileno(stdout)))
+		if (!a_KeepStd && isatty(fileno(stdout)))
 		{
 			return std::make_unique<cANSIConsoleListener>();
 		}

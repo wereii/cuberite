@@ -8,3 +8,6 @@ extern bool g_ShouldLogCommOut;
 
 /** If set to true, binary will attempt to run as a service. */
 extern bool g_RunAsService;
+
+/** If set to true, don't detach and keep logging into stdout/err, no effect without RunAsService. */
+extern bool g_KeepStdOutErr;

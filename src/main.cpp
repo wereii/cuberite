@@ -21,6 +21,7 @@
 bool g_ShouldLogCommIn;
 bool g_ShouldLogCommOut;
 bool g_RunAsService;
+bool g_KeepStdOutErr;
 
 /** Global that registers itself as a last chance exception handler to write a minidump on crash. */
 static MiniDumpWriter g_MiniDumpWriter;
@@ -145,6 +146,7 @@ static void ParseArguments(int argc, char ** argv, cMemorySettingsRepository & S
 	TCLAP::SwitchArg noBufArg        ("",  "no-output-buffering", "Disable output buffering", cmd);
 	TCLAP::SwitchArg noFileLogArg    ("",  "no-log-file",         "Disable logging to file", cmd);
 	TCLAP::SwitchArg runAsServiceArg ("d", "service",             "Run as a service on Windows, or daemon on UNIX like systems", cmd);
+	TCLAP::SwitchArg keepStdOutErr   ("k", "keep-std",      	  "Keep logging into stdout/err as service, no effect otherwise.", cmd);
 	cmd.parse(argc, argv);
 
 	// Copy the parsed args' values into a settings repository:
@@ -188,6 +190,10 @@ static void ParseArguments(int argc, char ** argv, cMemorySettingsRepository & S
 	if (runAsServiceArg.getValue())
 	{
 		g_RunAsService = true;
+		if (keepStdOutErr.getValue())
+		{
+			g_KeepStdOutErr = true;
+		}
 	}
 
 	// Apply the CrashDump flags for platforms that support them:

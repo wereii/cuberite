@@ -163,8 +163,12 @@ struct cStartAsService
 
 		//  Child process now goes quiet, running in the background.
 		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
+
+		if(!g_KeepStdOutErr)
+		{
+			close(STDOUT_FILENO);
+			close(STDERR_FILENO);
+		}
 
 		return false;
 	}

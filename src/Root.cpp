@@ -97,7 +97,7 @@ cRoot::~cRoot()
 
 bool cRoot::Run(cSettingsRepositoryInterface & a_OverridesRepo)
 {
-	auto consoleLogListener = MakeConsoleListener(g_RunAsService);
+	auto consoleLogListener = MakeConsoleListener(g_RunAsService, g_KeepStdOutErr);
 	auto consoleAttachment = cLogger::GetInstance().AttachListener(std::move(consoleLogListener));
 
 	cLogger::cAttachment fileAttachment;
